@@ -31,6 +31,7 @@ export function MainPage() {
 
       posInterval.current = setInterval(() => {
         setBotPosition((prevState) => getNextPos(prevState))
+        // Speed things up :)
       }, 100)
     }
     return () => {
