@@ -1,12 +1,12 @@
 import {PositionType} from '../types'
 import {COL_LENGTH, ROW_LENGTH, TILE_SIZE} from '../config'
 
-let xCoords = getCoords(ROW_LENGTH)
-let yCoords = getCoords(COL_LENGTH)
+let xCoords = getCoords(ROW_LENGTH, TILE_SIZE)
+let yCoords = getCoords(COL_LENGTH, TILE_SIZE)
 
-function getCoords(length: number): number[] {
+export function getCoords(length: number, size: number): number[] {
   let arr = []
-  for (let i = 0; arr.length < length; i += TILE_SIZE) {
+  for (let i = 0; arr.length < length; i += size) {
     arr.push(i)
   }
   return arr
@@ -19,14 +19,14 @@ export function getInitialPos(): PositionType {
   }
 }
 
-function getNextVal(pos: number, coords: number[]): number {
+export function getNextVal(pos: number, coords: number[]): number {
   const currentIndex = coords.indexOf(pos)
   const nextPos = currentIndex + 1
   const maxVal = coords[coords.length - 1]
   return coords[nextPos] <= maxVal ? coords[nextPos] : pos
 }
 
-function getPrevVal(pos: number, coords: number[]): number {
+export function getPrevVal(pos: number, coords: number[]): number {
   const currentIndex = coords.indexOf(pos)
   const prevPos = currentIndex - 1
   return coords[prevPos] >= 0 ? coords[prevPos] : pos
