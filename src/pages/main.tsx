@@ -16,6 +16,7 @@ export function MainPage() {
   const [botPosition, setBotPosition] = useState<PositionType>(getInitialPos())
   const [cleaned, setCleaned] = useState<CleanedListType>(CLEANED_INITIAL_STATE)
   const [gameRunning, toggleGameState] = useState<boolean>(false)
+  const [done, setDone] = useState<boolean>(false)
   const [timer, setTimer] = useState<number>(0)
 
   // TODO: Type react ref's
@@ -23,7 +24,7 @@ export function MainPage() {
   const timerInterval = useRef<any>(null)
 
   useEffect(() => {
-    if(gameRunning) {
+    if (gameRunning) {
       timerInterval.current = setInterval(() => {
         setTimer(time => time + 1)
       }, 1000)
@@ -50,6 +51,7 @@ export function MainPage() {
   useEffect(() => {
     if (Object.keys(cleaned).length >= NUMBER_OF_TILES) {
       toggleGameState(false)
+      setDone(true)
     }
   }, [cleaned])
 
@@ -65,6 +67,12 @@ export function MainPage() {
     timerInterval.current && clearInterval(timerInterval.current)
   }
 
+  const handleReset = () => {
+    handleStop()
+    handleStart()
+    setDone(false)
+  }
+
   return (
     <Container>
       <Title>Cleaning bot</Title>
@@ -72,10 +80,22 @@ export function MainPage() {
         gameRunning ?
           <>
             <p>{Object.keys(cleaned).length} / {NUMBER_OF_TILES} tiles cleaned</p>
-            <ActionButton onClick={() => handleStop()}>stop!</ActionButton>
+            <ActionButton onClick={handleStop}>stop!</ActionButton>
             <p>time: {timer}s</p>
           </>
-          : <ActionButton onClick={() => handleStart()}>start!</ActionButton>
+          : null
+      }
+      {
+        !gameRunning && !done ?
+          <ActionButton onClick={handleStart}>start!</ActionButton>
+          : null
+      }
+      {
+        done &&
+        <>
+          <p>Cleanup finished in {timer} seconds!</p>
+          <ActionButton onClick={handleReset}>Reset!</ActionButton>
+        </>
       }
       <Board>
         <CleaningBot pos={botPosition}/>

@@ -21,7 +21,7 @@ export function renderTiles(cleaned: CleanedListType) {
     <>
       {
         TILE_LIST().map((tile, index) =>
-          <Tile cleaned={cleaned[index]} index={index}/>
+          <Tile key={index} cleaned={cleaned[index]} index={index}/>
         )
       }
     </>
@@ -31,7 +31,7 @@ export function renderTiles(cleaned: CleanedListType) {
 export function Tile(props: Props) {
   const {cleaned, index} = props
   return (
-    <TileWrapper key={index} cleaned={cleaned}>
+    <TileWrapper cleaned={cleaned}>
       {index + 1}
     </TileWrapper>
   )
